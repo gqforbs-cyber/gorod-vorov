@@ -1,189 +1,346 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GOROD VOROV</title>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1"
+  />
+  <title>GOROD VOROV — Page 2</title>
 
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+  <style>
+    :root{
+      --glass: rgba(0,0,0,.55);
+      --glass2: rgba(0,0,0,.62);
+      --stroke: rgba(255,255,255,.10);
+      --card: rgba(0,0,0,.48);
+      --item: rgba(255,255,255,.10);
+      --item-hover: rgba(255,255,255,.16);
+      --text: #fff;
+      --muted: rgba(255,255,255,.75);
+      --online: #2BFF6A;
+      --danger: #7a1916;
+      --btn-red:#e10600;
+      --btn-red-dark:#b90500;
+    }
 
-html,body{
-  min-height:100%;
-  font-family:Arial, sans-serif;
-  color:white;
-}
+    *{ box-sizing:border-box; }
+    html, body { height:100%; margin:0; padding:0; }
 
-/* ФОН */
-body{
-  background:url("IMG_3251.jpeg") center/cover no-repeat fixed;
-  position:relative;
-}
+    body{
+      font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:#000;
+      color:var(--text);
+      overflow:auto;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-/* затемнение + блюр */
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  backdrop-filter:blur(10px);
-  background:rgba(0,0,0,0.6);
-  z-index:0;
-}
+    /* фон */
+    .bg{
+      position:fixed;
+      inset:0;
+      background:url("IMG_3251.jpeg") center center / cover no-repeat;
+      filter: blur(10px);
+      transform: scale(1.08);
+      opacity:.95;
+      z-index:-3;
+    }
+    .shade{
+      position:fixed;
+      inset:0;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,.35) 0%, rgba(0,0,0,.75) 80%, rgba(0,0,0,.85) 100%);
+      z-index:-2;
+    }
 
-/* контейнер */
-.container{
-  position:relative;
-  z-index:1;
-  padding:30px 20px 80px 20px;
-  display:flex;
-  flex-direction:column;
-  gap:25px;
-}
+    .page{
+      min-height:100%;
+      padding: max(16px, env(safe-area-inset-top)) 16px max(22px, env(safe-area-inset-bottom)) 16px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
 
-/* блок */
-.section{
-  background:rgba(0,0,0,0.6);
-  padding:20px;
-  border-radius:20px;
-}
+    .block{
+      border-radius:22px;
+      background: var(--glass);
+      border:1px solid var(--stroke);
+      padding:18px;
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
 
-.section h2{
-  margin-bottom:15px;
-  font-size:18px;
-  letter-spacing:2px;
-}
+    .title{
+      margin:0 0 12px 0;
+      font-size:32px;
+      font-weight:800;
+      letter-spacing: 6px;
+    }
 
-.item{
-  padding:14px 15px;
-  margin-bottom:12px;
-  border-radius:12px;
-  background:rgba(255,255,255,0.1);
-  cursor:pointer;
-  transition:0.2s;
-}
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
 
-.item:hover{
-  background:rgba(225,6,0,0.5);
-}
+    .item{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
 
-.online{
-  color:#00ff7f;
-  font-size:14px;
-}
+      padding:16px 18px;
+      border-radius:18px;
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.06);
 
-/* КНОПКИ РЕКВИЗИТОВ */
-.buttons{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  margin-top:15px;
-}
+      color:var(--text);
+      font-size:22px;
+      font-weight:500;
 
-.req-btn{
-  flex:1 1 calc(50% - 6px);
-  padding:14px;
-  border:none;
-  border-radius:14px;
-  background:#e10600;
-  color:white;
-  font-weight:bold;
-  letter-spacing:1px;
-  cursor:pointer;
-  transition:0.2s;
-}
+      cursor:pointer;
+      user-select:none;
+    }
+    .item:active{
+      transform: translateY(1px);
+    }
+    .item:hover{
+      background: var(--item-hover);
+    }
 
-.req-btn:active{
-  transform:scale(0.95);
-  background:#b90500;
-}
+    .status{
+      color: var(--online);
+      font-weight:700;
+      font-size:20px;
+      opacity:.95;
+      white-space:nowrap;
+    }
 
-/* POPUP */
-.popup{
-  position:fixed;
-  inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,0.7);
-  z-index:999;
-}
+    .adminItem{
+      background: rgba(161, 28, 22, .75);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .adminItem:hover{
+      background: rgba(161, 28, 22, .85);
+    }
 
-.popup-box{
-  background:#111;
-  padding:25px;
-  border-radius:20px;
-  text-align:center;
-  max-width:300px;
-}
+    .bossItem{
+      background: rgba(255,255,255,.10);
+    }
 
-.popup-box button{
-  margin-top:15px;
-  padding:10px 20px;
-  border:none;
-  border-radius:10px;
-  background:#e10600;
-  color:white;
-  cursor:pointer;
-}
-</style>
+    /* Реквизиты */
+    .subtext{
+      margin:0 0 14px 0;
+      font-size:22px;
+      font-weight:700;
+      color: rgba(255,255,255,.92);
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+    }
+
+    .chip{
+      border:none;
+      padding:14px 18px;
+      border-radius:18px;
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.08);
+      color:#fff;
+      font-size:18px;
+      font-weight:800;
+      letter-spacing:.5px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .chip:active{
+      transform: translateY(1px);
+      background: rgba(255,255,255,.16);
+    }
+
+    /* модалка */
+    .modalBackdrop{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:999;
+    }
+    .modal{
+      width:min(520px, 92vw);
+      border-radius:22px;
+      background: rgba(18,18,18,.92);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: 0 22px 70px rgba(0,0,0,.55);
+      padding:18px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .modalTitle{
+      margin:0 0 10px 0;
+      font-size:20px;
+      font-weight:900;
+      letter-spacing:.5px;
+    }
+    .modalText{
+      margin:0 0 16px 0;
+      font-size:18px;
+      color: rgba(255,255,255,.85);
+      line-height:1.35;
+    }
+    .modalBtn{
+      width:100%;
+      height:54px;
+      border:none;
+      border-radius:16px;
+      background: var(--btn-red);
+      color:#fff;
+      font-size:18px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .modalBtn:active{
+      background: var(--btn-red-dark);
+      transform: translateY(1px);
+    }
+
+    /* чтобы в телеге не было дерганий */
+    .spacer{
+      height: 6px;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="shade" aria-hidden="true"></div>
 
-<div class="container">
+  <div class="page">
+    <div class="block">
+      <h2 class="title">Support</h2>
+      <div class="list">
+        <div class="item" data-user="Gorod_vorov_KristaADM">
+          <span>Krista</span>
+          <span class="status">(online)</span>
+        </div>
 
-  <div class="section">
-    <h2>Support</h2>
-    <div class="item">Krista <span class="online">(online)</span></div>
-    <div class="item">Desmond <span class="online">(online)</span></div>
-    <div class="item">Clare <span class="online">(online)</span></div>
-  </div>
+        <div class="item" data-user="Gorod_vorov_DesmondADM">
+          <span>Desmond</span>
+          <span class="status">(online)</span>
+        </div>
 
-  <div class="section">
-    <h2>Administration</h2>
-    <div class="item">Doug</div>
-  </div>
+        <div class="item" data-user="Gorod_vorov_ClareADM">
+          <span>Clare</span>
+          <span class="status">(online)</span>
+        </div>
+      </div>
+    </div>
 
-  <div class="section">
-    <h2>Boss</h2>
-    <div class="item">Gorod Vorov</div>
-  </div>
+    <div class="block">
+      <h2 class="title">Administration</h2>
+      <div class="list">
+        <div class="item adminItem" data-user="Gorod_Vorov_ADM">
+          <span>Doug</span>
+          <span style="opacity:.85; font-weight:800;">&nbsp;</span>
+        </div>
+      </div>
+    </div>
 
-  <!-- НОВЫЙ БЛОК -->
-  <div class="section">
-    <h2>Реквизиты в наличии</h2>
-    <div class="buttons">
-      <button class="req-btn" onclick="openPopup()">АПК</button>
-      <button class="req-btn" onclick="openPopup()">Локал</button>
-      <button class="req-btn" onclick="openPopup()">Касса</button>
-      <button class="req-btn" onclick="openPopup()">ЮР</button>
+    <div class="block">
+      <h2 class="title">Boss</h2>
+      <div class="list">
+        <div class="item bossItem" data-user="Gorod_vorov01ADM">
+          <span>Gorod Vorov</span>
+          <span style="opacity:.85; font-weight:800;">&nbsp;</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- НИЖЕ ДОБАВЛЯЕМ ТО, ЧТО ТЫ СКАЗАЛ -->
+    <div class="block">
+      <p class="subtext">Реквизиты в наличии</p>
+      <div class="chips">
+        <button class="chip" data-rekv="АПК">(АПК)</button>
+        <button class="chip" data-rekv="локал">(локал)</button>
+        <button class="chip" data-rekv="касса">(касса)</button>
+        <button class="chip" data-rekv="ЮР">(ЮР)</button>
+      </div>
+      <div class="spacer"></div>
     </div>
   </div>
 
-</div>
-
-<!-- POPUP -->
-<div class="popup" id="popup">
-  <div class="popup-box">
-    Наличие уточнять у support
-    <br>
-    <button onclick="closePopup()">Закрыть</button>
+  <!-- MODAL -->
+  <div class="modalBackdrop" id="modalBackdrop">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalTitle" id="modalTitle">Информация</div>
+      <div class="modalText" id="modalText">наличие уточнять у support</div>
+      <button class="modalBtn" id="modalClose">OK</button>
+    </div>
   </div>
-</div>
 
-<script>
-function openPopup(){
-  document.getElementById("popup").style.display="flex";
-}
+  <script>
+    (function(){
+      const tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
 
-function closePopup(){
-  document.getElementById("popup").style.display="none";
-}
-</script>
+      function openUser(username){
+        const link = "https://t.me/" + username;
 
+        // если мы внутри Telegram Mini App — открываем “правильно”
+        if (tg && typeof tg.openTelegramLink === "function") {
+          try { tg.openTelegramLink(link); return; } catch(e){}
+        }
+
+        // запасной вариант
+        window.location.href = link;
+      }
+
+      // клики по людям
+      document.querySelectorAll('[data-user]').forEach(el => {
+        el.addEventListener('click', () => {
+          const u = el.getAttribute('data-user');
+          if (u) openUser(u);
+        });
+      });
+
+      // модалка для реквизитов
+      const modalBackdrop = document.getElementById('modalBackdrop');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalText = document.getElementById('modalText');
+      const modalClose = document.getElementById('modalClose');
+
+      function openModal(title, text){
+        modalTitle.textContent = title;
+        modalText.textContent = text;
+        modalBackdrop.style.display = 'flex';
+      }
+      function closeModal(){
+        modalBackdrop.style.display = 'none';
+      }
+
+      modalClose.addEventListener('click', closeModal);
+      modalBackdrop.addEventListener('click', (e) => {
+        if (e.target === modalBackdrop) closeModal();
+      });
+
+      document.querySelectorAll('[data-rekv]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const name = btn.getAttribute('data-rekv') || '';
+          openModal(name, 'наличие уточнять у support');
+        });
+      });
+
+      // легкая инициализация телеги (не ломает сайт)
+      if (tg) {
+        try { tg.ready(); } catch(e){}
+        try { tg.expand(); } catch(e){}
+      }
+    })();
+  </script>
 </body>
 </html>
