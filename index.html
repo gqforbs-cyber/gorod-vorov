@@ -1,125 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>GOROD VOROV</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOROD VOROV</title>
 
-  <style>
-    :root{
-      --btn-red:#e10600;
-      --btn-red-dark:#b90500;
-    }
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    *{ box-sizing:border-box; }
-    html, body { height:100%; margin:0; }
+html,body{
+  height:100%;
+  font-family:Arial, sans-serif;
+  overflow:hidden;
+  background:black;
+}
 
-    body{
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      overflow:hidden;
-      background:#000;
-    }
+/* ФОН */
+body{
+  background-image: url("IMG_3206.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
-    /* фон-картинка */
-    .bg{
-      position:fixed;
-      inset:0;
-      background-image: url("IMG_3206.jpeg");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      transform: scale(1.02);
-    }
+/* затемнение */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+}
 
-    /* лёгкое затемнение */
-    .overlay{
-      position:fixed;
-      inset:0;
-      background: rgba(0,0,0,0.35);
-    }
+/* КНОПКА */
+.play-container{
+  position:absolute;
+  bottom:20px;   /* опустили ниже */
+  left:50%;
+  transform:translateX(-50%);
+}
 
-    /* контейнер */
-    .wrap{
-      position:fixed;
-      inset:0;
-      display:flex;
-      align-items:flex-end;
-      justify-content:center;
-      padding: 0 24px calc(env(safe-area-inset-bottom) + 64px);
-    }
+button{
+  padding:16px 55px;   /* вернули прежний размер */
+  font-size:20px;
+  border:none;
+  border-radius:16px;
+  background:#e10600;
+  color:white;
+  transition:0.1s;
+}
 
-    /* кнопка */
-    .play-btn{
-      appearance:none;
-      border:0;
-      cursor:pointer;
-      width:min(320px, 78vw);
-      height:72px;
-      border-radius:20px;
-      background: var(--btn-red);
-      color:#fff;
-      font-weight:800;
-      font-size:22px;
-      letter-spacing:1px;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.45);
-      transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* эффект при наведении (на компе) */
-    .play-btn:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 16px 34px rgba(0,0,0,0.5);
-    }
-
-    /* эффект при нажатии (главное) */
-    .play-btn:active{
-      transform: translateY(2px) scale(0.97);
-      background: var(--btn-red-dark);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.4);
-    }
-
-    /* плавный переход */
-    .fade{
-      position:fixed;
-      inset:0;
-      background:#000;
-      opacity:0;
-      pointer-events:none;
-      transition: opacity 250ms ease;
-    }
-    .fade.on{ opacity:1; }
-  </style>
+/* эффект нажатия */
+button:active{
+  transform:scale(0.95);
+  background:#b90500;
+}
+</style>
 </head>
 
 <body>
-  <div class="bg"></div>
-  <div class="overlay"></div>
 
-  <div class="wrap">
-    <button class="play-btn" id="playBtn">PLAY</button>
-  </div>
+<div class="overlay"></div>
 
-  <div class="fade" id="fade"></div>
+<div class="play-container">
+  <button onclick="goNext()">PLAY</button>
+</div>
 
-  <script>
-    const btn = document.getElementById("playBtn");
-    const fade = document.getElementById("fade");
+<script>
+function goNext(){
+  window.location.href="page2.html";
+}
+</script>
 
-    btn.addEventListener("click", () => {
-      // лёгкая вибрация на айфоне/андроиде (если поддерживается)
-      if (navigator.vibrate) navigator.vibrate(20);
-
-      // плавное затемнение и переход на page2.html
-      fade.classList.add("on");
-      setTimeout(() => {
-        window.location.href = "page2.html";
-      }, 230);
-    });
-  </script>
 </body>
 </html>
