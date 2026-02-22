@@ -16,16 +16,19 @@ body {
   font-family: Arial, sans-serif;
   overflow: hidden;
   color: white;
+  background: black;
 }
 
-/* ===== Видео фон ===== */
+/* ===== Видео фон (идеально центрируется) ===== */
 #bg-video {
   position: fixed;
-  right: 0;
-  bottom: 0;
+  top: 50%;
+  left: 50%;
   min-width: 100%;
   min-height: 100%;
+  transform: translate(-50%, -50%);
   object-fit: cover;
+  object-position: center center;
   z-index: -2;
 }
 
@@ -36,11 +39,11 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.55);
   z-index: -1;
 }
 
-/* контент по центру */
+/* контент */
 .content {
   position: relative;
   z-index: 1;
@@ -52,12 +55,17 @@ body {
   text-align: center;
 }
 
+h1 {
+  font-size: 42px;
+  letter-spacing: 2px;
+  margin-bottom: 25px;
+}
+
 button {
-  margin-top: 20px;
-  padding: 15px 30px;
+  padding: 15px 40px;
   font-size: 18px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #e10600;
   color: white;
   cursor: pointer;
@@ -68,11 +76,10 @@ button:hover {
   background: #ff1a1a;
 }
 </style>
-
 </head>
+
 <body>
 
-<!-- Видео фон -->
 <video autoplay muted loop playsinline id="bg-video">
   <source src="bg.mp4.MOV" type="video/mp4">
 </video>
