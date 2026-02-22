@@ -15,7 +15,6 @@
 html,body{
   height:100%;
   font-family:Arial, sans-serif;
-  color:white;
   overflow:hidden;
   background:black;
 }
@@ -33,33 +32,21 @@ body{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,0.45);
-  z-index:0;
 }
 
-/* контент */
-.content{
-  position:relative;
-  z-index:1;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:20px;
-}
-
-h1{
-  font-size:42px;
-  margin-bottom:25px;
-  letter-spacing:1px;
+/* КНОПКА ВНИЗУ */
+.play-container{
+  position:absolute;
+  bottom:80px; /* регулируй если нужно ниже/выше */
+  left:50%;
+  transform:translateX(-50%);
 }
 
 button{
-  padding:15px 48px;
-  font-size:18px;
+  padding:16px 55px;
+  font-size:20px;
   border:none;
-  border-radius:14px;
+  border-radius:16px;
   background:#e10600;
   color:white;
 }
@@ -70,8 +57,7 @@ button{
 
 <div class="overlay"></div>
 
-<div class="content">
-  <h1>GOROD VOROV</h1>
+<div class="play-container">
   <button>PLAY</button>
 </div>
 
