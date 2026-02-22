@@ -1,78 +1,162 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GOROD VOROV</title>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1"
+  />
+  <title>GOROD VOROV</title>
 
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+  <style>
+    :root{
+      --btn-red:#e10600;
+      --btn-red-dark:#b90500;
+      --text:#fff;
+    }
 
-html,body{
-  height:100%;
-  font-family:Arial, sans-serif;
-  overflow:hidden;
-  background:black;
-}
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; margin:0; padding:0; }
 
-/* ФОН */
-body{
-  background-image: url("IMG_3206.jpeg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
+    body{
+      font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:#000;
+      color:var(--text);
+      overflow:hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-/* затемнение */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.45);
-}
+    .bg{
+      position:fixed;
+      inset:0;
+      background:url("IMG_3206.jpeg") center center / cover no-repeat;
+      transform: translateZ(0);
+    }
 
-/* КНОПКА */
-.play-container{
-  position:absolute;
-  bottom:20px;   /* опустили ниже */
-  left:50%;
-  transform:translateX(-50%);
-}
+    .shade{
+      position:fixed;
+      inset:0;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,.15) 0%, rgba(0,0,0,.55) 70%, rgba(0,0,0,.75) 100%);
+      pointer-events:none;
+    }
 
-button{
-  padding:16px 55px;   /* вернули прежний размер */
-  font-size:20px;
-  border:none;
-  border-radius:16px;
-  background:#e10600;
-  color:white;
-  transition:0.1s;
-}
+    .wrap{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding-bottom: max(28px, calc(env(safe-area-inset-bottom) + 18px));
+    }
 
-/* эффект нажатия */
-button:active{
-  transform:scale(0.95);
-  background:#b90500;
-}
-</style>
+    .play-btn{
+      width:min(300px, 78vw);
+      height:78px;
+      border:none;
+      border-radius:22px;
+      background:var(--btn-red);
+      color:#fff;
+      font-weight:800;
+      font-size:28px;
+      letter-spacing:1px;
+      box-shadow: 0 14px 35px rgba(0,0,0,.45);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      user-select:none;
+    }
+    .play-btn:active{
+      background:var(--btn-red-dark);
+      transform: translateY(1px);
+    }
+
+    /* чтобы не было “пусто пока не обновишь” */
+    body.preload .wrap{ opacity:0; }
+    body.ready .wrap{ opacity:1; transition: opacity .12s ease; }
+  </style>
 </head>
 
-<body>
+<body class="preload">
+  <div class="bg" aria-hidden="true"></div>
+  <div class="shade" aria-hidden="true"></div>
 
-<div class="overlay"></div>
+  <div class="wrap">
+    <button class="play-btn" id="playBtn">PLAY</button>
+  </div>
 
-<div class="play-container">
-  <button onclick="goNext()">PLAY</button>
-</div>
+  <script>
+    (function () {
+      const playBtn = document.getElementById('playBtn');
 
-<script>
-function goNext(){
-  window.location.href="page2.html";
-}
-</script>
+      playBtn.addEventListener('click', () => {
+        window.location.href = 'page2.html';
+      });
 
+      function getTG() {
+        return (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+      }
+
+      // максимально “жёсткая” инициализация под iOS Telegram
+      function tgHardInit() {
+        const tg = getTG();
+        if (!tg) return;
+
+        try { tg.ready(); } catch(e){}
+
+        // expand бывает не срабатывает с 1 раза в iOS — поэтому серия
+        try { tg.expand(); } catch(e){}
+        setTimeout(() => { try { tg.expand(); } catch(e){} }, 80);
+        setTimeout(() => { try { tg.expand(); } catch(e){} }, 250);
+        setTimeout(() => { try { tg.expand(); } catch(e){} }, 650);
+
+        // цвета
+        try { tg.setHeaderColor?.('#000000'); } catch(e){}
+        try { tg.setBackgroundColor?.('#000000'); } catch(e){}
+
+        // иногда помогает на iOS (если доступно)
+        try { tg.requestFullscreen?.(); } catch(e){}
+        try { tg.disableVerticalSwipes?.(); } catch(e){}
+      }
+
+      // показать кнопку гарантированно, даже если телега тормозит перерисовку
+      function forceShowUI() {
+        document.body.classList.add('ready');
+        // микрофикс перерисовки (иногда нужно именно в Telegram iOS)
+        requestAnimationFrame(() => {
+          document.body.style.transform = 'translateZ(0)';
+          setTimeout(() => { document.body.style.transform = ''; }, 0);
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        tgHardInit();
+
+        // ждём фон, но не зависим от него
+        const img = new Image();
+        img.onload = forceShowUI;
+        img.onerror = forceShowUI;
+        img.src = 'IMG_3206.jpeg';
+
+        // страховки — чтобы без “обновить”
+        setTimeout(forceShowUI, 200);
+        setTimeout(() => { tgHardInit(); forceShowUI(); }, 900);
+      });
+
+      // когда пользователь открывает/возвращается — снова expand
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          tgHardInit();
+          setTimeout(forceShowUI, 50);
+        }
+      });
+
+      // ещё один хак: на iOS иногда нужен пересчёт после смены ориентации/высоты
+      window.addEventListener('resize', () => {
+        tgHardInit();
+        setTimeout(forceShowUI, 50);
+      });
+    })();
+  </script>
 </body>
 </html>
